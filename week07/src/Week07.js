@@ -1,7 +1,3 @@
-//In your project, display the current date and time using JavaScript: Tuesday 16:00
-//Add a search engine: a search bar with a button. When searching for a city (i.e. Paris), display the city name on the page after the user submits the form.
-//Display a fake temperature (i.e 17) in Celsius and add a link to convert it to Fahrenheit. When clicking on it, it should convert the temperature to Fahrenheit. When clicking on Celsius, it should convert it back to Celsius.
-
 document.addEventListener("DOMContentLoaded", function () {
   //
   // Date & Time
@@ -48,6 +44,36 @@ document.addEventListener("DOMContentLoaded", function () {
   //
   // Search function
   //
+
+  function search(event) {
+    console.log("plp2");
+    event.preventDefault();
+
+    let searchInputElement = document.querySelector("#search-bar-input");
+
+    let cityElement = document.querySelector("#place");
+    cityElement.innerHTML = searchInputElement.value;
+    let cityInput = cityElement.innerHTML;
+
+    let apiKey = `ff8d31e224cad313b599807573231eca`;
+    let apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&units=metric&APPID=${apiKey}`;
+
+    axios.get(apiLink).then((response) => {
+      console.log(response.data);
+
+      let temp = Math.round(response.data.main.temp);
+      console.log(`${temp}`);
+
+      let temperatureElement = document.querySelector(
+        "#temperaturecurrent-temperature-value"
+      );
+      let temperatureUnitElement = document.querySelector(
+        ".current-temperature-unit"
+      );
+
+      temperatureElement.innerHTML = temp;
+    });
+  }
 
   function searchPlace(event) {
     event.preventDefault();
