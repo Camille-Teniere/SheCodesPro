@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Plus course</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="Week04.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Nunito:bold,italic,bolditalic,400,600,800,900"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Lora:bold,italic,bolditalic,400,600,800,900"
+    />
+    <script src="Week04.js"></script>
+  </head>
+  <body>
+    <section id="weather-app">
+      <form id="search-form">
+        <input
+          type="search"
+          placeholder="Type a city..."
+          autofocus="on"
+          autocomplete="off"
+          id="search-bar-input"
+        />
+        <input type="submit" value="Search" id="search-cta" class="cta" />
+      </form>
+      <div id="weather-infos">
+        <div id="area-infos">
+          <span id="place"><p>Rouen, France</p></span>
+          <span id="day-hour">
+            <p>Sunday, 23h00</p>
+          </span>
+          <span id="status"> <p>Cloudy, as always</p> </span>
+        </div>
+        <div id="area-weather">
+          <div id="area-weather-temp">
+            <span id="icon">⛅</span>
+            <span id="temperature-switch"
+              ><p>
+                <span id="temperature">15</span
+                ><sup
+                  ><a href="#" id="celcius-link">°C</a> |
+                  <a href="#" id="fahrenheit-link">°F</a></sup
+                >
+              </p></span
+            >
+          </div>
+          <div id="area-weather-extra">
+            <span id="precipitation"> Precipitation: 0% </span>
+            <span id="humidity"> Humidity: 77% </span>
+            <span id="wind"> Wind: 8 km/h </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
