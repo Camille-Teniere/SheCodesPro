@@ -3,29 +3,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // Search function
   //
 
-  // function changeToCelcius(event) {
-  //   event.preventDefault();
-  //   console.log("clicked on C");
-  //   if (unit == fahrenheitUnit) {
-  //     unit = celciusUnit;
-  //     temperature.innerHTML = Math.round((temperature.innerHTML - 32) / 1.8);
-  //     console.log(`Updated temperature: ${temperature.innerHTML}`);
-  //   }
-  // }
-
-  // function changeToFahrenheit(event) {
-  //   event.preventDefault();
-  //   console.log("clicked on F");
-  //   if (unit == celciusUnit) {
-  //     unit = fahrenheitUnit;
-  //     temperature.innerHTML = Math.round(temperature.innerHTML * 1.8 + 32);
-  //     console.log(`Updated temperature: ${temperature.innerHTML}`);
-  //   }
-  // }
-
   function capFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+
+  let celciusUnit = "metric";
+  let fahrenheitUnit = "imperial";
+  let unit = celciusUnit;
+  let rawTemperature;
 
   function fetchWeather(response) {
     console.log(response.data);
@@ -36,13 +21,14 @@ document.addEventListener("DOMContentLoaded", function () {
     let humidityElement = document.querySelector("#humidity");
     let windElement = document.querySelector("#wind");
     let localTimeElement = document.querySelector("#local-time");
+    let iconElement = document.querySelector("#icon").querySelector("img");
     let celciusElement = document.querySelector("#celcius-link");
     let fahrenheitElement = document.querySelector("#fahrenheit-link");
-    let iconElement = document.querySelector("#icon").querySelector("img");
 
+    rawTemperature = response.data.main.temp;
     let place = response.data.name;
-    let rawTemperature = response.data.main.temp;
     let temperature = Math.round(rawTemperature);
+    let temperatureWithSymbol = `${temperature}°`;
     let humidity = response.data.main.humidity;
     let wind = Math.round(response.data.wind.speed);
     let weather = capFirstLetter(response.data.weather[0].description);
@@ -50,21 +36,20 @@ document.addEventListener("DOMContentLoaded", function () {
     let icon = `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`;
 
     placeElement.innerHTML = place;
-    temperatureElement.innerHTML = `${temperature}°`;
+    temperatureElement.innerHTML = temperatureWithSymbol;
     humidityElement.innerHTML = `Humidity: ${humidity}%`;
     windElement.innerHTML = `Wind: ${wind} km/h`;
     weatherElement.innerHTML = weather;
     localTimeElement.innerHTML = formatDate(localTime);
     iconElement.src = icon;
+    celciusElement.addEventListener("click", changeToCelcius);
+    fahrenheitElement.addEventListener("click", changeToFahrenheit);
 
     console.log(
       `${place} | ${rawTemperature}° | ${temperature}° | ${humidity}% | ${wind} km / h | ${weather}`
     );
     console.log(`${localTime}`);
     console.log(`${icon}`);
-
-    // celciusElement.addEventListener("click", changeToCelcius);
-    // fahrenheitElement.addEventListener("click", changeToFahrenheit);
   }
 
   function formatDate(dateNow) {
@@ -90,9 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function searchPlace(place) {
-    let celciusUnit = "metric";
-    let fahrenheitUnit = "imperial";
-    let unit = celciusUnit;
+    unit = celciusUnit;
 
     let apiKey = `ff8d31e224cad313b599807573231eca`;
     let apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${place}&units=${unit}&APPID=${apiKey}`;
@@ -104,7 +87,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function submitInfo(event) {
     event.preventDefault();
     let searchInput = document.querySelector("#search-bar-input");
-
     searchPlace(searchInput.value);
   }
 
@@ -112,6 +94,26 @@ document.addEventListener("DOMContentLoaded", function () {
   searchBar.addEventListener("submit", submitInfo);
 
   searchPlace("Singapore");
+
+  function changeToCelcius(event) {
+    event.preventDefault();
+    console.log("clicked on C");
+    if (unit == fahrenheitUnit) {
+      unit = celciusUnit;
+      temperature.innerHTML = `${Math.round(rawTemperature)}°`;
+      console.log(`Updated temperature: ${temperature.innerHTML}`);
+    }
+  }
+
+  function changeToFahrenheit(event) {
+    event.preventDefault();
+    console.log("clicked on F");
+    if (unit == celciusUnit) {
+      unit = fahrenheitUnit;
+      temperature.innerHTML = `${Math.round(rawTemperature * 1.8 + 32)}°`;
+      console.log(`Updated temperature: ${temperature.innerHTML}`);
+    }
+  }
 
   // //
   // // Date & Time
