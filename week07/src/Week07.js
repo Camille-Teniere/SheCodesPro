@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let localTimeElement = document.querySelector("#local-time");
     let celciusElement = document.querySelector("#celcius-link");
     let fahrenheitElement = document.querySelector("#fahrenheit-link");
+    let iconElement = document.querySelector("#icon").querySelector("img");
 
     let place = response.data.name;
     let rawTemperature = response.data.main.temp;
@@ -46,10 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let wind = Math.round(response.data.wind.speed);
     let weather = capFirstLetter(response.data.weather[0].description);
     let localTime = new Date(response.data.dt * 1000);
-    console.log(
-      `${place} | ${rawTemperature}° | ${temperature}° | ${humidity}% | ${wind} km / h | ${weather}`
-    );
-    console.log(`${localTime}`);
+    let icon = `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`;
 
     placeElement.innerHTML = place;
     temperatureElement.innerHTML = temperature;
@@ -57,6 +55,13 @@ document.addEventListener("DOMContentLoaded", function () {
     windElement.innerHTML = `Wind: ${wind} km/h`;
     weatherElement.innerHTML = weather;
     localTimeElement.innerHTML = formatDate(localTime);
+    iconElement.src = icon;
+
+    console.log(
+      `${place} | ${rawTemperature}° | ${temperature}° | ${humidity}% | ${wind} km / h | ${weather}`
+    );
+    console.log(`${localTime}`);
+    console.log(`${icon}`);
 
     // celciusElement.addEventListener("click", changeToCelcius);
     // fahrenheitElement.addEventListener("click", changeToFahrenheit);
