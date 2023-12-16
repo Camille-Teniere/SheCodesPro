@@ -49,15 +49,36 @@ document.addEventListener("DOMContentLoaded", function () {
   // Search function
   //
 
+  // function changeToCelcius(event) {
+  //   event.preventDefault();
+  //   console.log("clicked on C");
+  //   if (unit == fahrenheitUnit) {
+  //     unit = celciusUnit;
+  //     temperature.innerHTML = Math.round((temperature.innerHTML - 32) / 1.8);
+  //     console.log(`Updated temperature: ${temperature.innerHTML}`);
+  //   }
+  // }
+
+  // function changeToFahrenheit(event) {
+  //   event.preventDefault();
+  //   console.log("clicked on F");
+  //   if (unit == celciusUnit) {
+  //     unit = fahrenheitUnit;
+  //     temperature.innerHTML = Math.round(temperature.innerHTML * 1.8 + 32);
+  //     console.log(`Updated temperature: ${temperature.innerHTML}`);
+  //   }
+  // }
+
   function fetchWeather(response) {
     console.log(response.data);
 
     let placeElement = document.querySelector("#weather-infos #place p");
-
     let temperatureElement = document.querySelector("#temperature");
     let weatherElement = document.querySelector("#weather-infos #status p");
     let humidityElement = document.querySelector("#humidity");
     let windElement = document.querySelector("#wind");
+    let celciusElement = document.querySelector("#celcius-link");
+    let fahrenheitElement = document.querySelector("#fahrenheit-link");
 
     let place = response.data.name;
     let rawTemperature = response.data.main.temp;
@@ -79,15 +100,19 @@ document.addEventListener("DOMContentLoaded", function () {
     humidityElement.innerHTML = `Humidity: ${humidity}%`;
     windElement.innerHTML = `Wind: ${wind} km/h`;
     weatherElement.innerHTML = weather;
+    // celciusElement.addEventListener("click", changeToCelcius);
+    // fahrenheitElement.addEventListener("click", changeToFahrenheit);
   }
 
   function searchPlace(place) {
     let celciusUnit = "metric";
     let fahrenheitUnit = "imperial";
     let unit = celciusUnit;
+
     let apiKey = `ff8d31e224cad313b599807573231eca`;
     let apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${place}&units=${unit}&APPID=${apiKey}`;
     //   console.log(`${apiLink}`);
+
     axios.get(apiLink).then(fetchWeather);
   }
 
@@ -102,29 +127,4 @@ document.addEventListener("DOMContentLoaded", function () {
   searchBar.addEventListener("submit", submitInfo);
 
   searchPlace("Singapore");
-
-  //   let celciusElement = document.querySelector("#celcius-link");
-  //   let fahrenheitElement = document.querySelector("#fahrenheit-link");
-  //   celciusElement.addEventListener("click", changeToCelcius);
-  //   fahrenheitElement.addEventListener("click", changeToFahrenheit);
-
-  //   function changeToCelcius(event) {
-  //     event.preventDefault();
-  //     console.log("clicked on C");
-  //     if (unit == fahrenheitUnit) {
-  //       unit = celciusUnit;
-  //       temperature.innerHTML = Math.round((temperature.innerHTML - 32) / 1.8);
-  //       console.log(`Updated temperature: ${temperatureElement.innerHTML}`);
-  //     }
-  //   }
-
-  //   function changeToFahrenheit(event) {
-  //     event.preventDefault();
-  //     console.log("clicked on F");
-  //     if (unit == celciusUnit) {
-  //       unit = fahrenheitUnit;
-  //       temperature.innerHTML = Math.round(temperature.innerHTML * 1.8 + 32);
-  //       console.log(`Updated temperature: ${temperatureElement.innerHTML}`);
-  //     }
-  //   }
 });
