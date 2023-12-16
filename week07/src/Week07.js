@@ -49,109 +49,82 @@ document.addEventListener("DOMContentLoaded", function () {
   // Search function
   //
 
-  let currentPlace = document.querySelector("#weather-infos #place p");
-  currentPlace.innerHTML = "Alan";
-  placeValue = currentPlace.innerHTML;
-  console.log(`The current place is: ${currentPlace.innerHTML}`);
-
-  let weatherElement = document.querySelector("#weather-infos #status p");
-
-  let temperatureElement = document.querySelector("#temperature");
-  let humidityElement = document.querySelector("#humidity");
-  let windElement = document.querySelector("#wind");
-
-  let celciusUnit = "metric";
-  let fahrenheitUnit = "imperial";
-  let unit = celciusUnit;
-
-  let apiKey = `ff8d31e224cad313b599807573231eca`;
-  let apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${placeValue}&units=${unit}&APPID=${apiKey}`;
-
-  axios.get(apiLink).then((response) => {
+  function fetchWeather(response) {
     console.log(response.data);
 
+    let placeElement = document.querySelector("#weather-infos #place p");
+
+    let temperatureElement = document.querySelector("#temperature");
+    let weatherElement = document.querySelector("#weather-infos #status p");
+    let humidityElement = document.querySelector("#humidity");
+    let windElement = document.querySelector("#wind");
+
+    let place = response.data.name;
     let rawTemperature = response.data.main.temp;
-    console.log(`Raw temp is ${rawTemperature}`);
     let temperature = Math.round(rawTemperature);
     let humidity = response.data.main.humidity;
     let wind = Math.round(response.data.wind.speed);
     let weather = capFirstLetter(response.data.weather[0].description);
-    console.log(`${temperature} | ${humidity} | ${wind} | ${weather}`);
-    console.log(`The current temperature is: ${temperature}`);
+    console.log(
+      `${place} | ${rawTemperature}° | ${temperature}° | ${humidity}% | ${wind} km / h | ${weather}`
+    );
+
+    placeElement.innerHTML = place;
+    temperatureElement.innerHTML = temperature;
+    humidityElement.innerHTML = `Humidity: ${humidity}%`;
+    windElement.innerHTML = `Wind: ${wind} km/h`;
+    weatherElement.innerHTML = weather;
 
     temperatureElement.innerHTML = temperature;
     humidityElement.innerHTML = `Humidity: ${humidity}%`;
     windElement.innerHTML = `Wind: ${wind} km/h`;
     weatherElement.innerHTML = weather;
-  });
+  }
 
-  function searchPlace(event) {
+  function searchPlace(place) {
+    let celciusUnit = "metric";
+    let fahrenheitUnit = "imperial";
+    let unit = celciusUnit;
+    let apiKey = `ff8d31e224cad313b599807573231eca`;
+    let apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${place}&units=${unit}&APPID=${apiKey}`;
+    //   console.log(`${apiLink}`);
+    axios.get(apiLink).then(fetchWeather);
+  }
+
+  function submitInfo(event) {
     event.preventDefault();
+    let searchInput = document.querySelector("#search-bar-input");
 
-    let searchPlace = document.querySelector("#search-bar-input");
-
-    let newPlace = document.querySelector("#weather-infos #place p");
-    newPlace.innerHTML = searchPlace.value;
-    let placeInput = newPlace.innerHTML;
-
-    let apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${placeInput}&units=metric&APPID=${apiKey}`;
-
-    axios.get(apiLink).then((response) => {
-      console.log(response.data);
-
-      let rawTemperature = response.data.main.temp;
-      console.log(`Raw temp is ${rawTemperature}`);
-      let temperature = Math.round(rawTemperature);
-      let humidity = response.data.main.humidity;
-      let wind = Math.round(response.data.wind.speed);
-      let weather = capFirstLetter(response.data.weather[0].description);
-      console.log(`${temperature} | ${humidity} | ${wind} | ${weather}`);
-      console.log(`The new temperature is: ${temperature}`);
-
-      temperatureElement.innerHTML = temperature;
-      humidityElement.innerHTML = `Humidity: ${humidity}%`;
-      windElement.innerHTML = `Wind: ${wind} km/h`;
-      weatherElement.innerHTML = weather;
-    });
+    searchPlace(searchInput.value);
   }
 
   let searchBar = document.querySelector("#search-form");
-  searchBar.addEventListener("submit", searchPlace);
+  searchBar.addEventListener("submit", submitInfo);
 
-  // function searchPlace(event) {
-  //   event.preventDefault();
+  searchPlace("Singapore");
 
-  //   let searchPlace = document.querySelector("#search-bar-input");
-  //   let newPlace = document.querySelector("#weather-infos #place p");
-  //   newPlace.innerHTML = searchPlace.value;
-  // }
+  //   let celciusElement = document.querySelector("#celcius-link");
+  //   let fahrenheitElement = document.querySelector("#fahrenheit-link");
+  //   celciusElement.addEventListener("click", changeToCelcius);
+  //   fahrenheitElement.addEventListener("click", changeToFahrenheit);
 
-  //
-  // Temperature Switch
-  //
+  //   function changeToCelcius(event) {
+  //     event.preventDefault();
+  //     console.log("clicked on C");
+  //     if (unit == fahrenheitUnit) {
+  //       unit = celciusUnit;
+  //       temperature.innerHTML = Math.round((temperature.innerHTML - 32) / 1.8);
+  //       console.log(`Updated temperature: ${temperatureElement.innerHTML}`);
+  //     }
+  //   }
 
-  let celciusElement = document.querySelector("#celcius-link");
-  let fahrenheitElement = document.querySelector("#fahrenheit-link");
-  celciusElement.addEventListener("click", changeToCelcius);
-  fahrenheitElement.addEventListener("click", changeToFahrenheit);
-
-  function changeToCelcius(event) {
-    event.preventDefault();
-    console.log("clicked on C");
-    if (unit == fahrenheitUnit) {
-      unit = celciusUnit;
-      temperature.innerHTML = Math.round((temperature.innerHTML - 32) / 1.8);
-      console.log(`Updated temperature: ${temperatureElement.innerHTML}`);
-    }
-  }
-
-  function changeToFahrenheit(event) {
-    event.preventDefault();
-    console.log("clicked on F");
-    if (unit == celciusUnit) {
-      unit = fahrenheitUnit;
-      temperature.innerHTML = Math.round(temperature.innerHTML * 1.8 + 32);
-      console.log(`Updated temperature: ${temperatureElement.innerHTML}`);
-    }
-  }
+  //   function changeToFahrenheit(event) {
+  //     event.preventDefault();
+  //     console.log("clicked on F");
+  //     if (unit == celciusUnit) {
+  //       unit = fahrenheitUnit;
+  //       temperature.innerHTML = Math.round(temperature.innerHTML * 1.8 + 32);
+  //       console.log(`Updated temperature: ${temperatureElement.innerHTML}`);
+  //     }
+  //   }
 });
