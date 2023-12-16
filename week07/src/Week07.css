@@ -132,7 +132,9 @@ form#search-form {
 }
 
 #place p {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 #icon {

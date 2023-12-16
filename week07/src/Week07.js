@@ -1,51 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
   //
-  // Date & Time
-  //
-
-  let now = new Date();
-  let date = now.getDate();
-  let days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  let day = days[now.getDay()];
-  let months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  let month = months[now.getMonth()];
-  let year = now.getFullYear();
-  let hours = now.getHours();
-  let minutes = now.getMinutes();
-  let fullDate = `${day} ${date} ${month} ${year}`;
-  let time = `${hours}h${minutes}`;
-  let dateAndTime = `${fullDate}, ${time}`;
-  console.log(dateAndTime);
-
-  let currentTimeP = document.getElementById("day-hour");
-  currentTimeP.textContent = dateAndTime;
-
-  function capFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  //
   // Search function
   //
 
@@ -69,6 +23,10 @@ document.addEventListener("DOMContentLoaded", function () {
   //   }
   // }
 
+  function capFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   function fetchWeather(response) {
     console.log(response.data);
 
@@ -79,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let windElement = document.querySelector("#wind");
     let celciusElement = document.querySelector("#celcius-link");
     let fahrenheitElement = document.querySelector("#fahrenheit-link");
+    let localTimeElement = document.querySelector("#local-time");
 
     let place = response.data.name;
     let rawTemperature = response.data.main.temp;
@@ -86,15 +45,18 @@ document.addEventListener("DOMContentLoaded", function () {
     let humidity = response.data.main.humidity;
     let wind = Math.round(response.data.wind.speed);
     let weather = capFirstLetter(response.data.weather[0].description);
+    let localTime = new Date(response.data.dt * 1000);
     console.log(
       `${place} | ${rawTemperature}° | ${temperature}° | ${humidity}% | ${wind} km / h | ${weather}`
     );
+    console.log(`${localTime}`);
 
     placeElement.innerHTML = place;
     temperatureElement.innerHTML = temperature;
     humidityElement.innerHTML = `Humidity: ${humidity}%`;
     windElement.innerHTML = `Wind: ${wind} km/h`;
     weatherElement.innerHTML = weather;
+    localTimeElement.innerHTML = formatDate(localTime);
 
     temperatureElement.innerHTML = temperature;
     humidityElement.innerHTML = `Humidity: ${humidity}%`;
@@ -102,6 +64,28 @@ document.addEventListener("DOMContentLoaded", function () {
     weatherElement.innerHTML = weather;
     // celciusElement.addEventListener("click", changeToCelcius);
     // fahrenheitElement.addEventListener("click", changeToFahrenheit);
+  }
+
+  function formatDate(dateNow) {
+    let minutes = dateNow.getMinutes();
+    let hours = dateNow.getHours();
+    let days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    let day = days[dateNow.getDay()];
+    let date = dateNow.getDate();
+
+    if (minutes < 10) {
+      minutes = `0${minutes}`;
+    }
+
+    return `${date} ${day}, ${hours}:${minutes}`;
   }
 
   function searchPlace(place) {
@@ -127,4 +111,36 @@ document.addEventListener("DOMContentLoaded", function () {
   searchBar.addEventListener("submit", submitInfo);
 
   searchPlace("Singapore");
+
+  // //
+  // // Date & Time
+  // //
+
+  // let now = new Date();
+  // let date = now.getDate();
+  // let day = days[now.getDay()];
+  // let months = [
+  //   "January",
+  //   "February",
+  //   "March",
+  //   "April",
+  //   "May",
+  //   "June",
+  //   "July",
+  //   "August",
+  //   "September",
+  //   "October",
+  //   "November",
+  //   "December",
+  // ];
+  // let month = months[now.getMonth()];
+  // let year = now.getFullYear();
+  // let hours = now.getHours();
+  // let minutes = now.getMinutes();
+  // let fullDate = `${day} ${date} ${month} ${year}`;
+  // let time = `${hours}h${minutes}`;
+  // let dateAndTime = `${fullDate}, ${time}`;
+  // console.log(dateAndTime);
+  // let yourTimeElement = document.querySelector("#your-time");
+  // yourTimeElement.innerHTML = `Your location time is: ${dateAndTime}`;
 });
