@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //
 
   let currentPlace = document.querySelector("#weather-infos #place p");
-  currentPlace.innerHTML = "Singapore";
+  currentPlace.innerHTML = "Alan";
   placeValue = currentPlace.innerHTML;
   console.log(`The current place is: ${currentPlace.innerHTML}`);
 
@@ -138,14 +138,20 @@ document.addEventListener("DOMContentLoaded", function () {
   function changeToCelcius(event) {
     event.preventDefault();
     console.log("clicked on C");
+    if (unit == fahrenheitUnit) {
+      unit = celciusUnit;
+      temperature.innerHTML = Math.round((temperature.innerHTML - 32) / 1.8);
+      console.log(`Updated temperature: ${temperatureElement.innerHTML}`);
+    }
   }
 
   function changeToFahrenheit(event) {
     event.preventDefault();
     console.log("clicked on F");
     if (unit == celciusUnit) {
-      temperatureElement.innerHTML = temperature.innerHTML * 1.8 + 32;
-      console.log(`Updated temperature: ${temperature}`);
+      unit = fahrenheitUnit;
+      temperature.innerHTML = Math.round(temperature.innerHTML * 1.8 + 32);
+      console.log(`Updated temperature: ${temperatureElement.innerHTML}`);
     }
   }
 });
