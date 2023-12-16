@@ -41,78 +41,111 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentTimeP = document.getElementById("day-hour");
   currentTimeP.textContent = dateAndTime;
 
+  function capFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   //
   // Search function
   //
 
-  function search(event) {
-    console.log("plp2");
-    event.preventDefault();
+  let currentPlace = document.querySelector("#weather-infos #place p");
+  currentPlace.innerHTML = "Singapore";
+  placeValue = currentPlace.innerHTML;
+  console.log(`The current place is: ${currentPlace.innerHTML}`);
 
-    let searchInputElement = document.querySelector("#search-bar-input");
+  let weatherElement = document.querySelector("#weather-infos #status p");
 
-    let cityElement = document.querySelector("#place");
-    cityElement.innerHTML = searchInputElement.value;
-    let cityInput = cityElement.innerHTML;
+  let temperatureElement = document.querySelector("#temperature");
+  let humidityElement = document.querySelector("#humidity");
+  let windElement = document.querySelector("#wind");
 
-    let apiKey = `ff8d31e224cad313b599807573231eca`;
-    let apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&units=metric&APPID=${apiKey}`;
+  let celciusUnit = "metric";
+  let fahrenheitUnit = "imperial";
+  let unit = celciusUnit;
 
-    axios.get(apiLink).then((response) => {
-      console.log(response.data);
+  let apiKey = `ff8d31e224cad313b599807573231eca`;
+  let apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${placeValue}&units=${unit}&APPID=${apiKey}`;
 
-      let temp = Math.round(response.data.main.temp);
-      console.log(`${temp}`);
+  axios.get(apiLink).then((response) => {
+    console.log(response.data);
 
-      let temperatureElement = document.querySelector(
-        "#temperaturecurrent-temperature-value"
-      );
-      let temperatureUnitElement = document.querySelector(
-        ".current-temperature-unit"
-      );
+    let rawTemperature = response.data.main.temp;
+    console.log(`Raw temp is ${rawTemperature}`);
+    let temperature = Math.round(rawTemperature);
+    let humidity = response.data.main.humidity;
+    let wind = Math.round(response.data.wind.speed);
+    let weather = capFirstLetter(response.data.weather[0].description);
+    console.log(`${temperature} | ${humidity} | ${wind} | ${weather}`);
+    console.log(`The current temperature is: ${temperature}`);
 
-      temperatureElement.innerHTML = temp;
-    });
-  }
+    temperatureElement.innerHTML = temperature;
+    humidityElement.innerHTML = `Humidity: ${humidity}%`;
+    windElement.innerHTML = `Wind: ${wind} km/h`;
+    weatherElement.innerHTML = weather;
+  });
 
   function searchPlace(event) {
     event.preventDefault();
 
     let searchPlace = document.querySelector("#search-bar-input");
+
     let newPlace = document.querySelector("#weather-infos #place p");
     newPlace.innerHTML = searchPlace.value;
-  }
+    let placeInput = newPlace.innerHTML;
 
-  let currentPlace = document.querySelector("#weather-infos #place p");
-  console.log(`The current place is: ${currentPlace.innerHTML}`);
+    let apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${placeInput}&units=metric&APPID=${apiKey}`;
+
+    axios.get(apiLink).then((response) => {
+      console.log(response.data);
+
+      let rawTemperature = response.data.main.temp;
+      console.log(`Raw temp is ${rawTemperature}`);
+      let temperature = Math.round(rawTemperature);
+      let humidity = response.data.main.humidity;
+      let wind = Math.round(response.data.wind.speed);
+      let weather = capFirstLetter(response.data.weather[0].description);
+      console.log(`${temperature} | ${humidity} | ${wind} | ${weather}`);
+      console.log(`The new temperature is: ${temperature}`);
+
+      temperatureElement.innerHTML = temperature;
+      humidityElement.innerHTML = `Humidity: ${humidity}%`;
+      windElement.innerHTML = `Wind: ${wind} km/h`;
+      weatherElement.innerHTML = weather;
+    });
+  }
 
   let searchBar = document.querySelector("#search-form");
   searchBar.addEventListener("submit", searchPlace);
+
+  // function searchPlace(event) {
+  //   event.preventDefault();
+
+  //   let searchPlace = document.querySelector("#search-bar-input");
+  //   let newPlace = document.querySelector("#weather-infos #place p");
+  //   newPlace.innerHTML = searchPlace.value;
+  // }
 
   //
   // Temperature Switch
   //
 
+  let celciusElement = document.querySelector("#celcius-link");
+  let fahrenheitElement = document.querySelector("#fahrenheit-link");
+  celciusElement.addEventListener("click", changeToCelcius);
+  fahrenheitElement.addEventListener("click", changeToFahrenheit);
+
   function changeToCelcius(event) {
     event.preventDefault();
-    let tempTxt = document.querySelector("#temperature");
-
-    tempTxt.innerHTML = "15";
+    console.log("clicked on C");
   }
 
   function changeToFahrenheit(event) {
     event.preventDefault();
-    let tempTxt = document.querySelector("#temperature");
-
-    tempTxt.innerHTML = "59";
+    console.log("clicked on F");
+    if (unit == celciusUnit) {
+      temperatureElement.innerHTML = temperature.innerHTML * 1.8 + 32;
+      console.log(`Updated temperature: ${temperature}`);
+    }
   }
-
-  let currentTemp = document.querySelector("#temperature");
-  console.log(`The current temperature is: ${currentTemp.innerHTML}°`);
-
-  let celciusLink = document.querySelector("#celcius-link");
-  celciusLink.addEventListener("click", changeToCelcius);
-
-  let fahrenheitLink = document.querySelector("#fahrenheit-link");
-  fahrenheitLink.addEventListener("click", changeToFahrenheit);
 });
