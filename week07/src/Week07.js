@@ -35,9 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let weatherElement = document.querySelector("#weather-infos #status p");
     let humidityElement = document.querySelector("#humidity");
     let windElement = document.querySelector("#wind");
+    let localTimeElement = document.querySelector("#local-time");
     let celciusElement = document.querySelector("#celcius-link");
     let fahrenheitElement = document.querySelector("#fahrenheit-link");
-    let localTimeElement = document.querySelector("#local-time");
 
     let place = response.data.name;
     let rawTemperature = response.data.main.temp;
@@ -58,10 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
     weatherElement.innerHTML = weather;
     localTimeElement.innerHTML = formatDate(localTime);
 
-    temperatureElement.innerHTML = temperature;
-    humidityElement.innerHTML = `Humidity: ${humidity}%`;
-    windElement.innerHTML = `Wind: ${wind} km/h`;
-    weatherElement.innerHTML = weather;
     // celciusElement.addEventListener("click", changeToCelcius);
     // fahrenheitElement.addEventListener("click", changeToFahrenheit);
   }
