@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let icon = `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`;
 
     placeElement.innerHTML = place;
-    temperatureElement.innerHTML = temperature;
+    temperatureElement.innerHTML = `${temperature}°`;
     humidityElement.innerHTML = `Humidity: ${humidity}%`;
     windElement.innerHTML = `Wind: ${wind} km/h`;
     weatherElement.innerHTML = weather;

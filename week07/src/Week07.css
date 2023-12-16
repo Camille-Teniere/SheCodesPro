@@ -138,22 +138,18 @@ form#search-form {
 }
 
 #icon {
-  font-size: 2rem;
-  margin-right: 0.25rem;
-}
-
-#icon p {
-  align-items: flex-start;
+  margin-right: 0.5rem;
 }
 
 #temperature-switch p {
   font-size: 2rem;
-  font-style: bold;
+  font-weight: bold;
 }
 
 #temperature-switch sup {
   font-size: 1rem !important;
   font-weight: 600;
+  padding-left: 2rem;
 }
 
 #temperature {
@@ -176,10 +172,10 @@ form#search-form {
 
 #area-weather {
   margin-top: 1rem;
+  margin-bottom: 1rem;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 #area-weather-temp {
@@ -192,5 +188,5 @@ form#search-form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  align-self: flex-start;
+  align-self: center;
 }
