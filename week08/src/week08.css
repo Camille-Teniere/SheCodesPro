@@ -91,6 +91,7 @@ img {
 
 section#weather-app {
   max-width: fit-content;
+  width: 80%;
   margin: 1rem auto;
   padding: 1.5rem;
   border: 5px solid var(--kyanite);
@@ -129,6 +130,10 @@ form#search-form {
   border: 1px solid var(--kyanite);
   border-radius: 5px;
   margin-left: 1rem;
+}
+
+#weather-infos {
+  margin: 1rem auto;
 }
 
 #place p {
@@ -172,7 +177,6 @@ form#search-form {
 
 #area-weather {
   margin-top: 1rem;
-  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -189,4 +193,27 @@ form#search-form {
   flex-direction: column;
   align-items: flex-start;
   align-self: center;
+}
+
+.weather-forecast {
+  /* background-color: lightgrey; */
+  display: flex;
+  justify-content: center;
+}
+
+.forecast-card {
+  /* max-width: fit-content; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  /* border: 1px solid red; */
+}
+
+.forecast-icon {
+  width: 80%;
+}
+
+.weather-forecast {
+  margin: 1rem auto;
 }

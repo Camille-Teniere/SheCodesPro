@@ -146,4 +146,28 @@ document.addEventListener("DOMContentLoaded", function () {
   // console.log(dateAndTime);
   // let yourTimeElement = document.querySelector("#your-time");
   // yourTimeElement.innerHTML = `Your location time is: ${dateAndTime}`;
+
+  function displayForecast() {
+    let days = ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    let forecastHTML = "";
+
+    days.forEach(function (day) {
+      forecastHTML =
+        forecastHTML +
+        `
+      <div class="forecast-card">
+          <div class="forecast-date">${day}</div>
+          <div class="forecast-icon">
+            <img src="https://openweathermap.org/img/wn/04n@2x.png" />
+          </div>
+          <span class="forecast-min">3°</span>
+          <span class="forecast-max">23°</span>
+        </div>`;
+    });
+
+    let forecastElement = document.querySelector("#forecast");
+    forecastElement.innerHTML = forecastHTML;
+  }
+
+  displayForecast();
 });
