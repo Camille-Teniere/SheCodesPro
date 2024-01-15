@@ -12,6 +12,48 @@ document.addEventListener("DOMContentLoaded", function () {
   let unit = celciusUnit;
   let rawTemperature;
 
+  function changeToCelcius(event) {
+    event.preventDefault();
+    console.log("clicked on C");
+    if (unit == fahrenheitUnit) {
+      unit = celciusUnit;
+      temperature.innerHTML = `${Math.round(rawTemperature)}°`;
+      console.log(`Updated temperature: ${temperature.innerHTML}`);
+    }
+  }
+
+  function changeToFahrenheit(event) {
+    event.preventDefault();
+    console.log("clicked on F");
+    if (unit == celciusUnit) {
+      unit = fahrenheitUnit;
+      temperature.innerHTML = `${Math.round(rawTemperature * 1.8 + 32)}°`;
+      console.log(`Updated temperature: ${temperature.innerHTML}`);
+    }
+  }
+
+  function formatDate(dateNow) {
+    let minutes = dateNow.getMinutes();
+    let hours = dateNow.getHours();
+    let days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    let day = days[dateNow.getDay()];
+    let date = dateNow.getDate();
+
+    if (minutes < 10) {
+      minutes = `0${minutes}`;
+    }
+
+    return `${date} ${day}, ${hours}:${minutes}`;
+  }
+
   function fetchWeather(response) {
     console.log(response.data);
 
@@ -26,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let fahrenheitElement = document.querySelector("#fahrenheit-link");
 
     rawTemperature = response.data.main.temp;
+
     let place = response.data.name;
     let temperature = Math.round(rawTemperature);
     let temperatureWithSymbol = `${temperature}°`;
@@ -52,34 +95,12 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(`${icon}`);
   }
 
-  function formatDate(dateNow) {
-    let minutes = dateNow.getMinutes();
-    let hours = dateNow.getHours();
-    let days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    let day = days[dateNow.getDay()];
-    let date = dateNow.getDate();
-
-    if (minutes < 10) {
-      minutes = `0${minutes}`;
-    }
-
-    return `${date} ${day}, ${hours}:${minutes}`;
-  }
-
   function searchPlace(place) {
     unit = celciusUnit;
 
     let apiKey = `ff8d31e224cad313b599807573231eca`;
     let apiLink = `https://api.openweathermap.org/data/2.5/weather?q=${place}&units=${unit}&APPID=${apiKey}`;
-    //   console.log(`${apiLink}`);
+    console.log(`${apiLink}`);
 
     axios.get(apiLink).then(fetchWeather);
   }
@@ -95,25 +116,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
   searchPlace("Singapore");
 
-  function changeToCelcius(event) {
-    event.preventDefault();
-    console.log("clicked on C");
-    if (unit == fahrenheitUnit) {
-      unit = celciusUnit;
-      temperature.innerHTML = `${Math.round(rawTemperature)}°`;
-      console.log(`Updated temperature: ${temperature.innerHTML}`);
-    }
+  function getForecast(place) {
+    unit = celciusUnit;
+
+    let apiKey = `ff8d31e224cad313b599807573231eca`;
+    let apiLink = `https://api.openweathermap.org/data/2.5/forecast?q=${place}&units=${unit}&APPID=${apiKey}`;
+    console.log(`${apiLink}`);
+
+    axios.get(apiLink).then(displayForecast);
   }
 
-  function changeToFahrenheit(event) {
-    event.preventDefault();
-    console.log("clicked on F");
-    if (unit == celciusUnit) {
-      unit = fahrenheitUnit;
-      temperature.innerHTML = `${Math.round(rawTemperature * 1.8 + 32)}°`;
-      console.log(`Updated temperature: ${temperature.innerHTML}`);
-    }
+  getForecast("Rouen");
+
+  function displayForecast(response) {
+    console.log(response.main);
+
+    let days = ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    let forecastHTML = "";
+
+    days.forEach(function (day) {
+      forecastHTML =
+        forecastHTML +
+        `
+      <div class="forecast-card">
+          <div class="forecast-date">${day}</div>
+          <div class="forecast-icon">
+            <img src="https://openweathermap.org/img/wn/04n@2x.png" />
+          </div>
+          <span class="forecast-min">3°</span>
+          <span class="forecast-max">23°</span>
+        </div>`;
+    });
+
+    let forecastElement = document.querySelector("#forecast");
+    forecastElement.innerHTML = forecastHTML;
   }
+
+  displayForecast();
 
   // //
   // // Date & Time
@@ -146,28 +185,4 @@ document.addEventListener("DOMContentLoaded", function () {
   // console.log(dateAndTime);
   // let yourTimeElement = document.querySelector("#your-time");
   // yourTimeElement.innerHTML = `Your location time is: ${dateAndTime}`;
-
-  function displayForecast() {
-    let days = ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    let forecastHTML = "";
-
-    days.forEach(function (day) {
-      forecastHTML =
-        forecastHTML +
-        `
-      <div class="forecast-card">
-          <div class="forecast-date">${day}</div>
-          <div class="forecast-icon">
-            <img src="https://openweathermap.org/img/wn/04n@2x.png" />
-          </div>
-          <span class="forecast-min">3°</span>
-          <span class="forecast-max">23°</span>
-        </div>`;
-    });
-
-    let forecastElement = document.querySelector("#forecast");
-    forecastElement.innerHTML = forecastHTML;
-  }
-
-  displayForecast();
 });
