@@ -91,8 +91,10 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(
       `${place} | ${rawTemperature}° | ${temperature}° | ${humidity}% | ${wind} km / h | ${weather}`
     );
-    console.log(`${localTime}`);
+    // console.log(`${localTime}`);
     console.log(`${icon}`);
+
+    getForecast(place);
   }
 
   function searchPlace(place) {
@@ -126,10 +128,8 @@ document.addEventListener("DOMContentLoaded", function () {
     axios.get(apiLink).then(displayForecast);
   }
 
-  getForecast("Rouen");
-
   function displayForecast(response) {
-    console.log(response.main);
+    console.log(response.data);
 
     let days = ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"];
     let forecastHTML = "";
@@ -151,8 +151,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let forecastElement = document.querySelector("#forecast");
     forecastElement.innerHTML = forecastHTML;
   }
-
-  displayForecast();
 
   // //
   // // Date & Time
