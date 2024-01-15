@@ -164,8 +164,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 day.weather[0].icon
               }@2x.png" />
             </div>
-            <span class="forecast-min">${Math.round(minTempOfDay)}°</span>
-            <span class="forecast-max">${Math.round(maxTempOfDay)}°</span>
+            <span class="forecast-min temperature">${Math.round(
+              minTempOfDay
+            )}°</span>
+            <span class="forecast-max temperature">${Math.round(
+              maxTempOfDay
+            )}°</span>
           </div>`;
 
           displayedDays++;
