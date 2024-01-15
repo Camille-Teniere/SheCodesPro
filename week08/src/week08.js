@@ -54,6 +54,20 @@ document.addEventListener("DOMContentLoaded", function () {
     return `${date} ${day}, ${hours}:${minutes}`;
   }
 
+  function formatDay(timestamp) {
+    let date = new Date(timestamp * 1000);
+    let days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    return days[date.getDay()];
+  }
+
   function fetchWeather(response) {
     console.log(response.data);
 
@@ -131,21 +145,40 @@ document.addEventListener("DOMContentLoaded", function () {
   function displayForecast(response) {
     console.log(response.data);
 
-    let days = ["Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun"];
     let forecastHTML = "";
+    let displayedDays = 0;
+    let previousDate = null;
+    let minTempOfDay = Infinity;
+    let maxTempOfDay = -Infinity;
 
-    days.forEach(function (day) {
-      forecastHTML =
-        forecastHTML +
-        `
-      <div class="forecast-card">
-          <div class="forecast-date">${day}</div>
-          <div class="forecast-icon">
-            <img src="https://openweathermap.org/img/wn/04n@2x.png" />
-          </div>
-          <span class="forecast-min">3°</span>
-          <span class="forecast-max">23°</span>
-        </div>`;
+    response.data.list.forEach(function (day, index) {
+      let currentDate = new Date(day.dt * 1000).getDate();
+
+      if (currentDate !== previousDate) {
+        if (previousDate !== null) {
+          forecastHTML += `
+        <div class="forecast-card">
+            <div class="forecast-date">${formatDay(day.dt)}</div>
+            <div class="forecast-icon">
+              <img src="https://openweathermap.org/img/wn/${
+                day.weather[0].icon
+              }@2x.png" />
+            </div>
+            <span class="forecast-min">${Math.round(minTempOfDay)}°</span>
+            <span class="forecast-max">${Math.round(maxTempOfDay)}°</span>
+          </div>`;
+
+          displayedDays++;
+        }
+
+        previousDate = currentDate;
+        minTempOfDay = Infinity;
+        maxTempOfDay = -Infinity;
+      }
+
+      // Update min and max temperatures for the day
+      minTempOfDay = Math.min(minTempOfDay, day.main.temp_min);
+      maxTempOfDay = Math.max(maxTempOfDay, day.main.temp_max);
     });
 
     let forecastElement = document.querySelector("#forecast");
