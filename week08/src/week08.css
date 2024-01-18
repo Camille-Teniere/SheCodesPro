@@ -17,7 +17,6 @@
   --green: var(--emerald);
   --purple: var(--amethyst);
   --blue-alt: var(--saphire);
-  --blue-alt2: #4a79ac;
 
   --colour-primary: var(--kyanite);
   --colour-secondary: var(--saphire);
@@ -124,7 +123,7 @@ form#search-form {
   align-items: center; /* Vertically align content */
   height: 2rem;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--kyanite);
+  border: 3px solid var(--kyanite);
   border-radius: 5px;
   vertical-align: middle;
   flex-grow: 1;
@@ -239,8 +238,8 @@ form#search-form {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--blue-alt);
-  border: 1px solid var(--blue-alt);
+  /* background: var(--blue-alt); */
+  border: 3px solid var(--blue-alt);
   border-radius: 5px;
   padding: 0.5rem;
 }
@@ -258,6 +257,10 @@ form#search-form {
   flex-direction: column;
   align-items: center;
   margin: 0.5rem auto;
+}
+
+.forecast-date {
+  font-weight: bold;
 }
 
 .forecast-icon {

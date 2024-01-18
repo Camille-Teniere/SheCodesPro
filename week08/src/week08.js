@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function fetchWeather(response) {
-    console.log(response.data);
+    // console.log(response.data);
 
     let placeElement = document.querySelector("#weather-infos #place p");
     let temperatureElement = document.querySelector("#temperature");
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
       `${place} | ${rawTemperature}° | ${temperature}° | ${humidity}% | ${wind} km / h | ${weather}`
     );
     // console.log(`${localTime}`);
-    console.log(`${icon}`);
+    // console.log(`${icon}`);
 
     getForecast(place);
   }
@@ -153,8 +153,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     response.data.list.forEach(function (day, index) {
       let currentDate = new Date(day.dt * 1000).getDate();
-
       if (currentDate !== previousDate) {
+        // console.log(`${currentDate} & ${previousDate}`);
         if (previousDate !== null) {
           forecastHTML += `
         <div class="forecast-card">
